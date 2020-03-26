@@ -1,5 +1,6 @@
 class Candle:
     dateIndex = 0
+    hourIndex = 1
     timeSeparator = ' '
 
     def __init__(self, time, open, high, low, close):
@@ -13,6 +14,14 @@ class Candle:
     def get_date_from_timestamp(self):
         date = self.time.split(self.timeSeparator)
         return date[self.dateIndex]
+
+    # Get date format "HHMMSS" from "YYYYMMMDD HHMMSS"
+    def get_hour_from_timestamp(self):
+        date = self.time.split(self.timeSeparator)
+        return date[self.hourIndex]
+
+    def get_full_date(self):
+        return self.time
 
     def get_min_from_candle(self):
         min = self.open if self.open <= self.close else self.close
