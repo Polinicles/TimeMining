@@ -6,36 +6,43 @@ def hour_range_stadistics(data, fromTime, toTime):
     # Filter candles for the range
     candles = [candle for candle in data if fromTime == candle.get_hour_from_timestamp() or toTime == candle.get_hour_from_timestamp()]
 
-    fromCandleMin = candles[0].get_min_from_candle()  # Initial open, e.g. 09:00
     fromCandleMax = candles[0].get_max_from_candle()  # Initial close, e.g. 09:00
-    toCandleMin = candles[1].get_min_from_candle()  # e.g. 10:00
     toCandleMax = candles[1].get_max_from_candle()  # e.g. 10:00
-    day = ''  # Initial day
-
+    bothDays = 0
+    day = candles[0].get_date_from_timestamp()
     for candle in candles:
         currentDay = candle.get_date_from_timestamp()
-        if currentDay == day:
-            if candle.get_full_date() == currentDay + ' ' + fromTime:
-                fromCandleMin = candle.get_min_from_candle()
-                fromTimeMax = candle.get_max_from_candle()
-            elif candle.get_full_date() == currentDay + ' ' + toTime:
-                toCandleMin = candle.get_min_from_candle()
-                toCandleMax = candle.get_max_from_candle()
-        else:
-            if fromCandleMax > toCandleMin:
-                bullDays += 1
-            elif fromCandleMax == fromCandleMin:
-                lateralDays += 1
-            else:
-                bearDays += 1
-            fromCandleMin = candle.get_min_from_candle()
+
+        if day != currentDay and bothDays < 2: # In case we only have one of two candles from the range
+            bothDays = 0
+            if (candles.index(candle) + 1 < len(candles)):
+                day = candles[candles.index(candle) + 1].get_date_from_timestamp()
+
+        if candle.get_full_date() == currentDay + ' ' + fromTime:
             fromCandleMax = candle.get_max_from_candle()
-            day = currentDay
+            bothDays += 1
+        elif candle.get_full_date() == currentDay + ' ' + toTime:
+            toCandleMax = candle.get_max_from_candle()
+            bothDays += 1
+
+        if bothDays == 2: # if we have both candles, update the result
+            if fromCandleMax < toCandleMax:
+                bullDays += 1
+            elif fromCandleMax == toCandleMax:
+                lateralDays += 1
+            elif fromCandleMax > toCandleMax:
+                bearDays += 1
+            bothDays = 0
+
+            if(candles.index(candle) + 1 < len(candles)): # update the day if there's a next candle
+                day = candles[candles.index(candle) + 1].get_date_from_timestamp()
+
     result = {}
     result['bullish'] = bullDays
     result['bearish'] = bearDays
     result['equal'] = lateralDays
-    result['total'] = len(candles) / 2
+    result['total'] = bullDays + bearDays + lateralDays
+
     return result
 
 
