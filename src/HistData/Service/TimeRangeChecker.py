@@ -15,7 +15,7 @@ def hour_range_stadistics(data, fromTime, toTime):
 
         if day != currentDay and bothDays < 2: # In case we only have one of two candles from the range
             bothDays = 0
-            if (candles.index(candle) + 1 < len(candles)):
+            if is_end_of_list(candles, candle):
                 day = candles[candles.index(candle) + 1].get_date_from_timestamp()
 
         if candle.get_full_date() == currentDay + ' ' + fromTime:
@@ -34,7 +34,7 @@ def hour_range_stadistics(data, fromTime, toTime):
                 bearDays += 1
             bothDays = 0
 
-            if(candles.index(candle) + 1 < len(candles)): # update the day if there's a next candle
+            if is_end_of_list(candles, candle): # update the day if there's a next candle
                 day = candles[candles.index(candle) + 1].get_date_from_timestamp()
 
     result = {}
@@ -49,3 +49,6 @@ def hour_range_stadistics(data, fromTime, toTime):
 def range_percentage(matches, totalDays):
     percentage = float(matches) / float(totalDays) * 100
     return str(round(percentage, 2))
+
+def is_end_of_list(list, item):
+    return (list.index(item) + 1) < len(list)
