@@ -1,5 +1,6 @@
 from src.HistData.Candle.Candle import Candle
 
+
 class FileParser:
     timeIndex = 0
     openIndex = 1
@@ -18,13 +19,13 @@ class FileParser:
         data = []
         f = open(self.filename, self.fileOperation)
         for line in f:
-            lineData = line.split(self.cellSeparator)
+            line_data = line.split(self.cellSeparator)
             candle = Candle(
-                lineData[self.timeIndex],
-                float(lineData[self.openIndex]),
-                float(lineData[self.highIndex]),
-                float(lineData[self.lowIndex]),
-                float(lineData[self.closeIndex])
+                line_data[self.timeIndex],
+                float(line_data[self.openIndex]),
+                float(line_data[self.highIndex]),
+                float(line_data[self.lowIndex]),
+                float(line_data[self.closeIndex])
             )
             data.append(candle)
         f.close()

@@ -3,8 +3,10 @@ from src.HistData.File.FileParser import FileParser
 from src.HistData.Service.TimeRangeChecker import hour_range_stadistics, range_percentage
 
 # Time is in Eastern Standard Time (EST) WITHOUT Day Light Savings adjustments
+
+
 def main():
-    filename = 'data/HistData/2018_EUR_USD_M1.csv'
+    filename = 'data/HistData/2019_EUR_USD_M1.csv'
     parser = FileParser(filename)
     ranges = [('000000', '010000'), ('010000', '020000'), ('020000', '030000'), ('030000', '040000'),
               ('040000', '050000'), ('050000', '060000'), ('060000', '070000'), ('070000', '080000'),

@@ -23,10 +23,16 @@ class Candle:
     def get_full_date(self):
         return self.time
 
-    def get_min_from_candle(self):
-        min = self.open if self.open <= self.close else self.close
-        return min
+    # Get min value between Open / Close values
+    def get_min_from_open_close(self):
+        return self.open if self.open <= self.close else self.close
 
+    # Get max value between Open / Close values
     def get_max_from_candle(self):
-        max = self.close if self.close > self.open else self.open
-        return max
+        return self.close if self.close > self.open else self.open
+
+    def get_open(self):
+        return self.open
+
+    def get_close(self):
+        return self.close
